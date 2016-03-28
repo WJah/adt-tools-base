@@ -44,6 +44,20 @@ public class Layout {
       stringBuffer.append(view.getIdString() + "\r\n");
     }
     stringBuffer.append("*/\r\n");
+    stringBuffer.append("/*map\r\n");
+    for(View view:viewsInLayout){
+      stringBuffer.append("wam = new WidgetAttibuteMap();\r\n");
+      stringBuffer.append("wam.put(\"parentId\", layout." + layoutFileName + "_layout);\r\n");
+      stringBuffer.append("wam.put(\"id\", id." + view.getIdString()+ ");\r\n");
+      stringBuffer.append("wam.put(\"type\", " + "\"" + view.getType()+ "\");\r\n");
+      stringBuffer.append("wam.put(\"x\"," + view.getX()+ ");\r\n");
+      stringBuffer.append("wam.put(\"y\"," + view.getY()+ ");\r\n");
+      stringBuffer.append("wam.put(\"width\"," + view.getWidth()+ ");\r\n");
+      stringBuffer.append("wam.put(\"height\"," + view.getHeight()+ ");\r\n");
+      stringBuffer.append("wam.put(\"text\", \"" + view.getText()+ "\");\r\n");
+      stringBuffer.append("allWidget.add(wam);\r\n");
+    }
+    stringBuffer.append("map*/\r\n");
     stringBuffer.append("public static final class " + layoutFileName + "\r\n");
     stringBuffer.append("{\r\n");
     for(View view:viewsInLayout){

@@ -64,6 +64,10 @@ public class FileUtil {
       if (files.length > 0) {
         File R = updateFile(path + "/gen/R.java");
         fileWriter = new FileWriter(R,true);
+        fileWriter.append("package gen;\r\n");
+        fileWriter.append("import java.util.List;\r\n");
+        fileWriter.append("import java.util.ArrayList;\r\n");
+        fileWriter.append("import android.util.WidgetAttributeMap;\r\n");
         fileWriter.append("public final class R {\r\n");
       }
       else {
@@ -115,15 +119,50 @@ public class FileUtil {
         fileWriter.append("\tpublic static final int " + fileName.substring(0, fileName.length() - 5) +
                           "_layout = 0x" + Integer.toHexString(RIdDefine.LAYOUT + fileCount) + ";\r\n");
       }
+      //write static code of WidgetAttributeMap
       if (fileWriter != null) {
         fileWriter.append("}\r\n");
         fileWriter.append("public static final class canvas {\r\n");
+        fileWriter.append("\tstatic public List<WidgetAttributeMap> allWidget;\r\n");
+        fileWriter.append("\tstatic {\r\n");
+        fileWriter.append("\t WidgetAttributeMap wam;\r\n");
       }
+
+      for(File f : files){
+        bufferedReader = new BufferedReader(new FileReader(f));
+        String line = bufferedReader.readLine();
+        boolean mapStart = false;
+        while (line != null){
+          if (line.equals("/*map")) {
+            mapStart = true;
+            line = bufferedReader.readLine();
+            continue;
+          }
+          if (line.equals("map*/")){
+            break;
+          }
+          if (mapStart) {
+            fileWriter.append(line + "\r\n");
+          }
+          line = bufferedReader.readLine();
+        }
+      }
+      fileWriter.append("}\r\n");
+
+      //write all temp file to R.java
       for (File f : files){
         bufferedReader = new BufferedReader(new FileReader(f));
         String line = bufferedReader.readLine();
+        boolean tmpStart = false;
         while (line != null){
-          fileWriter.append(line + "\r\n");
+          if (line.equals("map*/")){
+            tmpStart = true;
+            line = bufferedReader.readLine();
+            continue;
+          }
+          if (tmpStart) {
+            fileWriter.append(line + "\r\n");
+          }
           line = bufferedReader.readLine();
         }
       }
