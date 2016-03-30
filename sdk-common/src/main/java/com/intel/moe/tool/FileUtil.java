@@ -56,15 +56,15 @@ public class FileUtil {
       securityManager.setActive(false, credential);
     }
     //store R.java under /Project_Root_Path/gen
-    makeDir(path + "/gen");
+    makeDir(path + "/MultiScreen/src/main/java/generated");
     File file = new File(path + "/tmp");
     File[] files = file.listFiles();
     try {
       FileWriter fileWriter = null;
       if (files.length > 0) {
-        File R = updateFile(path + "/gen/R.java");
+        File R = updateFile(path + "/MultiScreen/src/main/java/generated/R.java");
         fileWriter = new FileWriter(R,true);
-        fileWriter.append("package gen;\r\n");
+        fileWriter.append("package generated;\r\n");
         fileWriter.append("import java.util.List;\r\n");
         fileWriter.append("import java.util.ArrayList;\r\n");
         fileWriter.append("import android.util.WidgetAttributeMap;\r\n");
@@ -125,6 +125,7 @@ public class FileUtil {
         fileWriter.append("public static final class canvas {\r\n");
         fileWriter.append("\tstatic public List<WidgetAttributeMap> allWidget;\r\n");
         fileWriter.append("\tstatic {\r\n");
+        fileWriter.append("\tallWidget = new ArrayList<WidgetAttributeMap>();\r\n");
         fileWriter.append("\t WidgetAttributeMap wam;\r\n");
       }
 
